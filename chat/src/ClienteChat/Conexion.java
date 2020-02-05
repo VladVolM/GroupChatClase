@@ -39,7 +39,7 @@ public class Conexion extends javax.swing.JPanel {
         jLabel1.setMinimumSize(new java.awt.Dimension(102, 15));
         jLabel1.setPreferredSize(new java.awt.Dimension(102, 15));
 
-        jTextField1.setText("192.168.8.");
+        jTextField1.setText("127.0.0.1");
         jTextField1.setMaximumSize(new java.awt.Dimension(175, 22));
         jTextField1.setMinimumSize(new java.awt.Dimension(175, 22));
         jTextField1.setPreferredSize(new java.awt.Dimension(175, 22));
@@ -49,6 +49,7 @@ public class Conexion extends javax.swing.JPanel {
 
         jLabel2.setText("Puerto a usar:");
 
+        jTextField2.setText("6000");
         jTextField2.setMaximumSize(new java.awt.Dimension(175, 22));
         jTextField2.setMinimumSize(new java.awt.Dimension(175, 22));
         jTextField2.setPreferredSize(new java.awt.Dimension(175, 22));
@@ -61,6 +62,7 @@ public class Conexion extends javax.swing.JPanel {
         jLabel3.setMinimumSize(new java.awt.Dimension(102, 15));
         jLabel3.setPreferredSize(new java.awt.Dimension(102, 15));
 
+        jTextField3.setText("Volodymyr");
         jTextField3.setMaximumSize(new java.awt.Dimension(175, 22));
         jTextField3.setMinimumSize(new java.awt.Dimension(175, 22));
         jTextField3.setPreferredSize(new java.awt.Dimension(175, 22));
@@ -146,7 +148,7 @@ public class Conexion extends javax.swing.JPanel {
         if (ejecutar){
             try {
                 Socket cliente = new Socket(jTextField1.getText(), Integer.valueOf(jTextField2.getText()));
-                ((Vista)SwingUtilities.getWindowAncestor(this)).verChat(cliente,jTextField3.getText());
+                ((Cliente)SwingUtilities.getWindowAncestor(this)).verChat(cliente,jTextField3.getText());
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null,"Ocurrio un error al conectarse al servidor");
             }

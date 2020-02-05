@@ -11,11 +11,13 @@ public class Multiples_Threads implements Runnable{
     Grupo grupo;
     ServerSocket server;
     Socket cliente;
+    String nombre;
     Thread t = null;
-    Multiples_Threads(Grupo grupo,Socket cliente,ServerSocket server) {
+    Multiples_Threads(Grupo grupo,Socket cliente,ServerSocket server,String nombre) {
         this.grupo=grupo;
         this.cliente=cliente;
         this.server=server;
+        this.nombre=nombre;
     }
     private void representarUsuario(String usuario){
         grupo.ponerUsuario(usuario);
@@ -47,7 +49,7 @@ public class Multiples_Threads implements Runnable{
                         //FUNCION DE TERMINAR TODOS LOS THREADS
                     }else{
                         representarUsuario(lectura);
-                        t=(new Thread(new Multiples_Threads(grupo,cli,null)));
+                        t=(new Thread(new Multiples_Threads(grupo,cli,null,lectura)));
                         t.start();
                     }
                 }
@@ -61,7 +63,7 @@ public class Multiples_Threads implements Runnable{
                 while(true){
                     datain = new DataInputStream(cliente.getInputStream());
                     lectura=datain.readUTF();
-                    representarMensaje(lectura);
+                    representarMensaje("{"+nombre+"}:"+lectura);
                 }
             }catch(Exception e){
                 //SE CIERRA SI EL CLIENTE SE DESACTIVA

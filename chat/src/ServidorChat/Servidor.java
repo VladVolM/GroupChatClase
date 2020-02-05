@@ -17,7 +17,7 @@ public class Servidor extends javax.swing.JFrame {
         
         try {
             server= new ServerSocket(6000);
-            t=(new Thread(new Multiples_Threads(grupoMenu,null,server)));
+            t=(new Thread(new Multiples_Threads(grupoMenu,null,server,"SERVIDOR")));
             t.start();
         } catch (IOException ex) {
             Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);

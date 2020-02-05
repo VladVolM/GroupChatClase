@@ -7,12 +7,25 @@ public class Grupo extends javax.swing.JPanel {
     public Grupo() {
         initComponents();
     }
+    
     public void ponerMensaje(String mensaje){
-        jTextArea1.append(mensaje);
+        String enviar=mensaje+"\n";
+        jTextArea1.append(enviar);
+        envio(enviar,true);
     }
+    
     public void ponerUsuario(String usuario){
+        String enviar="< ["+usuario+"] se ha unido al chat>\n";
+        jTextArea1.append(enviar);
+        envio(enviar,true);
         modelo.addElement(usuario);
         jList1.setModel(modelo);
+        envio(usuario,false);
+    }
+    
+    private void envio(String compartible,boolean men_usu){
+        //enviar un metodo X que elija si es mensaje o usuario
+        //true mensaje, false usuario
     }
     /**
      * This method is called from within the constructor to initialize the form.

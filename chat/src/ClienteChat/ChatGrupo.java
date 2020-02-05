@@ -4,11 +4,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-/**
- *
- * @author alumno
- */
 public class ChatGrupo extends javax.swing.JPanel {
 DataOutputStream dataout;
 DataInputStream datain;
@@ -23,15 +21,9 @@ DataInputStream datain;
         //ENVIAR USUARIO
         dataout = new DataOutputStream(cliente.getOutputStream());
         dataout.writeUTF(usuario);//enviar el usuario
-        
         datain = new DataInputStream(cliente.getInputStream());
-        
-/*
-            dataout.writeUTF(jTextField1.getText());
-            System.out.println(datain.readUTF());
-*/
-
 //////////////////////////cliente.close(); // Cierro el socket
+///////////////CREAR THREAD QUE SOLO ESCUCHA AL SERVIDOR
     }
 
 
@@ -63,11 +55,16 @@ DataInputStream datain;
 
         jLabel1.setText("M:");
 
-        jTextField1.setMaximumSize(new java.awt.Dimension(211, 19));
-        jTextField1.setMinimumSize(new java.awt.Dimension(211, 19));
-        jTextField1.setPreferredSize(new java.awt.Dimension(211, 19));
+        jTextField1.setMaximumSize(new java.awt.Dimension(211, 22));
+        jTextField1.setMinimumSize(new java.awt.Dimension(211, 22));
+        jTextField1.setPreferredSize(new java.awt.Dimension(211, 22));
 
         jButton1.setText("Enviar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -103,6 +100,16 @@ DataInputStream datain;
                 .addGap(10, 10, 10))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    // TODO add your handling code here:
+    try {
+        dataout.writeUTF(jTextField1.getText());
+        jTextField1.setText("");
+    } catch (IOException ex) {
+        Logger.getLogger(ChatGrupo.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
