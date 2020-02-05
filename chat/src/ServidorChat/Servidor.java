@@ -1,21 +1,29 @@
 package ServidorChat;
 
-import java.net.Socket;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-/**
- *
- * @author alumno
- */
 public class Servidor extends javax.swing.JFrame {
 
-    Grupo GrupoMenu = new Grupo();
-    
-    public Servidor() {
+    Grupo grupoMenu = new Grupo();
+    ServerSocket server;
+    Thread t;
+    public Servidor(){
         initComponents();
-        this.setContentPane(GrupoMenu);
+        this.setContentPane(grupoMenu);
         this.pack();
+        
+        try {
+            server= new ServerSocket(6000);
+            t=(new Thread(new Multiples_Threads(grupoMenu,null,server)));
+            t.start();
+        } catch (IOException ex) {
+            Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
