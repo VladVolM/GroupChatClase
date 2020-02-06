@@ -147,8 +147,12 @@ public class Conexion extends javax.swing.JPanel {
         }
         if (ejecutar){
             try {
-                Socket cliente = new Socket(jTextField1.getText(), Integer.valueOf(jTextField2.getText()));
-                ((Cliente)SwingUtilities.getWindowAncestor(this)).verChat(cliente,jTextField3.getText());
+                if (jTextField3.getText().charAt(0)=='*'){
+                    jLabel6.setText("Servidor Apagado");
+                }else{
+                    Socket cliente = new Socket(jTextField1.getText(), Integer.valueOf(jTextField2.getText()));
+                    ((Cliente)SwingUtilities.getWindowAncestor(this)).verChat(cliente,jTextField3.getText());
+                }
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null,"Ocurrio un error al conectarse al servidor");
             }

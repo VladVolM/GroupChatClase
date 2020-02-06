@@ -1,11 +1,14 @@
 package ServidorChat;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
@@ -32,6 +35,14 @@ public class Multiples_Threads implements Runnable{
         
     }
 
+    private void terminarTodo(Collection<Thread> threads) {
+        Iterator itr = threads.iterator();
+        Thread thred;
+        while(itr.hasNext()) {
+            thred = (Thread)itr.next();
+            thred.stop();
+        }
+    }
     private void representarMensaje(String mensaje){
         grupo.ponerMensaje(mensaje);
     }
@@ -41,22 +52,34 @@ public class Multiples_Threads implements Runnable{
         String lectura;
         if (cliente==null){
             //crear THREADs de lectura
-            boolean ejecutar=true;char salir;//variables que se ocupan de terminar el servidor
+            boolean ejecutar=true,nombreRepetido=false;char salir;//variables que se ocupan de terminar el servidor
             Socket cli;//donde se crearan los nuevos clientes
-
+            DataOutputStream dataout;
             ObjectOutputStream salida;
-            
-            //guardar un array de los clientes///////////////////////////////////////////////////
+            Collection<Thread> threads_totales= new LinkedList<>();
             try {
                 while(ejecutar){
                     cli= server.accept();
                     coleccion.add(cli);
                     datain = new DataInputStream(cli.getInputStream());
+                    dataout = new DataOutputStream(cli.getOutputStream());
                     lectura=datain.readUTF();
+                    /*do{
+                        lectura=datain.readUTF();
+                        
+                        if(modelo.indexOf(lectura)==-1){
+                            nombreRepetido=false;
+                            dataout.writeBoolean(true);
+                        }else{
+                            nombreRepetido=true;
+                            dataout.writeBoolean(false);
+                        }
+                    }while(nombreRepetido);*/
                     salir=lectura.charAt(0);
                     if (salir=='*'){
                         ejecutar=false;
-                        //FUNCION DE TERMINAR TODOS LOS THREADS
+                        representarMensaje("<<<<SERVIDOR APAGODO>>>>");
+                        terminarTodo(threads_totales);
                     }else{
                         salida = new ObjectOutputStream(cli.getOutputStream());
 
@@ -64,6 +87,7 @@ public class Multiples_Threads implements Runnable{
                         representarUsuario(lectura);
                         t=(new Thread(new Multiples_Threads(grupo,cli,null,lectura,coleccion,null)));
                         t.start();
+                        threads_totales.add(t);
                     }
                 }
             } catch (IOException ex) {
