@@ -28,7 +28,6 @@ public class Thread_cliente implements Runnable{
         try {
             entrada = new ObjectInputStream(servidor.getInputStream());
             DefaultListModel<String> dato = (DefaultListModel<String>) entrada.readObject();
-            System.out.println("Lo que esta en el primer elemento "+dato.toString());
             modelo=dato;
             lista.setModel(modelo);
         } catch (IOException | ClassNotFoundException ex) {

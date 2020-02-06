@@ -62,7 +62,7 @@ public class Multiples_Threads implements Runnable{
 
                         salida.writeObject(modelo);// enviando el objeto
                         representarUsuario(lectura);
-                        t=(new Thread(new Multiples_Threads(grupo,cli,null,lectura,null,null)));
+                        t=(new Thread(new Multiples_Threads(grupo,cli,null,lectura,coleccion,null)));
                         t.start();
                     }
                 }
@@ -78,8 +78,11 @@ public class Multiples_Threads implements Runnable{
                     lectura=datain.readUTF();
                     representarMensaje("{"+nombre+"}:"+lectura);
                 }
-            }catch(Exception e){
-                //SE CIERRA SI EL CLIENTE SE DESACTIVA
+            }catch(IOException e){
+                String enviar="< ["+nombre+"] ha abandonado el chat>";
+                coleccion.remove(cliente);
+                representarMensaje(enviar);
+                grupo.borrarUsuario(nombre);
             }
         }
     }

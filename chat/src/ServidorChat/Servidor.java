@@ -5,9 +5,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 
 public class Servidor extends javax.swing.JFrame {
     DefaultListModel<String> modelo = new DefaultListModel<>();
@@ -17,15 +16,15 @@ public class Servidor extends javax.swing.JFrame {
     Thread t;
     public Servidor(){
         initComponents();
-        this.setContentPane(grupoMenu);
-        this.pack();
-
         try {
             server= new ServerSocket(6000);
             t=(new Thread(new Multiples_Threads(grupoMenu,null,server,"SERVIDOR",coleccion,modelo)));
             t.start();
+            this.setContentPane(grupoMenu);
+            this.pack();
         } catch (IOException ex) {
-            Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error al crear el servidor, procura que el puerto 6000 este libre.\n(Es posible que has ejecutado el mismo programa 2 veces sin apagar el anterior)");
+            System.exit(0);
         }
     }
     
@@ -39,6 +38,7 @@ public class Servidor extends javax.swing.JFrame {
     private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("SERVIDOR");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

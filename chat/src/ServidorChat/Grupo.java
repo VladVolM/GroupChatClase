@@ -72,6 +72,26 @@ public class Grupo extends javax.swing.JPanel {
             }
         }
     }
+    
+    public void borrarUsuario(String usuario){
+        Iterator itr=coleccion.iterator();
+        Socket c;
+        DataOutputStream dataout;
+        modelo.removeElement(usuario);
+        jList1.setModel(modelo);
+        while(itr.hasNext()) {
+                try {
+                    c = (Socket)itr.next();
+                    dataout = new DataOutputStream(c.getOutputStream());
+                    dataout.writeBoolean(false);
+                    dataout.writeBoolean(false);
+                    dataout.writeUTF(usuario);
+                } catch (IOException ex) {
+                    Logger.getLogger(Grupo.class.getName()).log(Level.SEVERE, null, ex);
+                    System.out.println("Error en borrar usuario");
+                }
+            }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

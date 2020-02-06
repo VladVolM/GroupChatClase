@@ -30,7 +30,17 @@ DataInputStream datain;
 
     }
 
-
+    private void envio(){
+        String mensaje = jTextField1.getText();
+        try {
+            if (!"".equals(mensaje)){
+                dataout.writeUTF(mensaje);
+                jTextField1.setText("");
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(ChatGrupo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -62,6 +72,11 @@ DataInputStream datain;
         jTextField1.setMaximumSize(new java.awt.Dimension(211, 22));
         jTextField1.setMinimumSize(new java.awt.Dimension(211, 22));
         jTextField1.setPreferredSize(new java.awt.Dimension(211, 22));
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
 
         jButton1.setText("Enviar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -107,13 +122,13 @@ DataInputStream datain;
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
     // TODO add your handling code here:
-    try {
-        dataout.writeUTF(jTextField1.getText());
-        jTextField1.setText("");
-    } catch (IOException ex) {
-        Logger.getLogger(ChatGrupo.class.getName()).log(Level.SEVERE, null, ex);
-    }
+    envio();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+        envio();
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
