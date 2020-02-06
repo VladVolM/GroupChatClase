@@ -18,12 +18,16 @@ DataInputStream datain;
      */
     public ChatGrupo(Socket cliente, String usuario) throws IOException {
         initComponents();
-        //ENVIAR USUARIO
+        this. 
+       //ENVIAR USUARIO
         dataout = new DataOutputStream(cliente.getOutputStream());
         dataout.writeUTF(usuario);//enviar el usuario
         datain = new DataInputStream(cliente.getInputStream());
+        ///////////////CREAR THREAD QUE SOLO ESCUCHA AL SERVIDOR
+        Thread constante = (new Thread(new Thread_cliente(datain,jTextArea1, jList1,cliente)));
+        constante.start();
 //////////////////////////cliente.close(); // Cierro el socket
-///////////////CREAR THREAD QUE SOLO ESCUCHA AL SERVIDOR
+
     }
 
 

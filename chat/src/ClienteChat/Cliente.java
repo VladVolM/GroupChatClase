@@ -20,6 +20,7 @@ public class Cliente extends javax.swing.JFrame {
     }
 
     public void verChat(Socket cliente, String usuario) throws IOException{
+        this.setTitle(usuario);
         chat = new ChatGrupo(cliente, usuario);
         this.setContentPane(chat);
         this.pack();

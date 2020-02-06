@@ -2,22 +2,27 @@ package ServidorChat;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
 
 public class Servidor extends javax.swing.JFrame {
-
-    Grupo grupoMenu = new Grupo();
+    DefaultListModel<String> modelo = new DefaultListModel<>();
+    private Collection<Socket> coleccion = new LinkedList<>();
+    Grupo grupoMenu = new Grupo(coleccion,modelo);
     ServerSocket server;
     Thread t;
     public Servidor(){
         initComponents();
         this.setContentPane(grupoMenu);
         this.pack();
-        
+
         try {
             server= new ServerSocket(6000);
-            t=(new Thread(new Multiples_Threads(grupoMenu,null,server,"SERVIDOR")));
+            t=(new Thread(new Multiples_Threads(grupoMenu,null,server,"SERVIDOR",coleccion,modelo)));
             t.start();
         } catch (IOException ex) {
             Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);

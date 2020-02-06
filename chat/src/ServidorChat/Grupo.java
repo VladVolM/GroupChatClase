@@ -1,31 +1,76 @@
 package ServidorChat;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 
 public class Grupo extends javax.swing.JPanel {
-    DefaultListModel<String> modelo = new DefaultListModel<>();
-    public Grupo() {
+    DefaultListModel<String> modelo;
+    Collection<Socket> coleccion;
+    public Grupo(Collection<Socket> coleccion,DefaultListModel<String> modelo) {
         initComponents();
+        this.coleccion=coleccion;
+        this.modelo=modelo;
     }
     
     public void ponerMensaje(String mensaje){
-        String enviar=mensaje+"\n";
-        jTextArea1.append(enviar);
-        envio(enviar,true);
+
+            String enviar=mensaje+"\n";
+            jTextArea1.append(enviar);
+            envio(enviar,true);
+
     }
     
     public void ponerUsuario(String usuario){
-        String enviar="< ["+usuario+"] se ha unido al chat>\n";
-        jTextArea1.append(enviar);
-        envio(enviar,true);
-        modelo.addElement(usuario);
-        jList1.setModel(modelo);
-        envio(usuario,false);
+
+            String enviar="< ["+usuario+"] se ha unido al chat>\n";
+            jTextArea1.append(enviar);
+            envio(enviar,true);
+            modelo.addElement(usuario);
+            jList1.setModel(modelo);
+            envio(usuario,false);
+
     }
     
     private void envio(String compartible,boolean men_usu){
         //enviar un metodo X que elija si es mensaje o usuario
-        //true mensaje, false usuario
+        //true mensaje, false usuario (true añadir,false borrar)
+        Iterator itr=coleccion.iterator();
+        Socket c;
+        DataOutputStream dataout;
+        
+        if (men_usu){
+
+            while(itr.hasNext()) {
+                try {
+                    c = (Socket)itr.next();
+                    dataout = new DataOutputStream(c.getOutputStream());
+                    dataout.writeBoolean(true);
+                    dataout.writeUTF(compartible);
+                } catch (IOException ex) {
+                    Logger.getLogger(Grupo.class.getName()).log(Level.SEVERE, null, ex);
+                    System.out.println("Error en poner mensaje");
+                }
+            }
+        }else{
+            while(itr.hasNext()) {
+                try {
+                    c = (Socket)itr.next();
+                    dataout = new DataOutputStream(c.getOutputStream());
+                    dataout.writeBoolean(false);
+                    dataout.writeBoolean(true);
+                    dataout.writeUTF(compartible);
+                } catch (IOException ex) {
+                    Logger.getLogger(Grupo.class.getName()).log(Level.SEVERE, null, ex);
+                    System.out.println("Error en poner usuario");
+                }
+            }
+        }
     }
     /**
      * This method is called from within the constructor to initialize the form.

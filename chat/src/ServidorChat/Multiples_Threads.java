@@ -2,22 +2,30 @@ package ServidorChat;
 
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
 
 public class Multiples_Threads implements Runnable{
+    DefaultListModel<String> modelo;
     Grupo grupo;
     ServerSocket server;
     Socket cliente;
     String nombre;
+    Collection<Socket> coleccion;
     Thread t = null;
-    Multiples_Threads(Grupo grupo,Socket cliente,ServerSocket server,String nombre) {
+    
+    Multiples_Threads(Grupo grupo,Socket cliente,ServerSocket server,String nombre,Collection<Socket> coleccion,DefaultListModel<String> modelo) {
         this.grupo=grupo;
         this.cliente=cliente;
         this.server=server;
         this.nombre=nombre;
+        this.coleccion=coleccion;
+        this.modelo=modelo;
     }
     private void representarUsuario(String usuario){
         grupo.ponerUsuario(usuario);
@@ -36,11 +44,13 @@ public class Multiples_Threads implements Runnable{
             boolean ejecutar=true;char salir;//variables que se ocupan de terminar el servidor
             Socket cli;//donde se crearan los nuevos clientes
 
+            ObjectOutputStream salida;
             
             //guardar un array de los clientes///////////////////////////////////////////////////
             try {
                 while(ejecutar){
                     cli= server.accept();
+                    coleccion.add(cli);
                     datain = new DataInputStream(cli.getInputStream());
                     lectura=datain.readUTF();
                     salir=lectura.charAt(0);
@@ -48,8 +58,11 @@ public class Multiples_Threads implements Runnable{
                         ejecutar=false;
                         //FUNCION DE TERMINAR TODOS LOS THREADS
                     }else{
+                        salida = new ObjectOutputStream(cli.getOutputStream());
+
+                        salida.writeObject(modelo);// enviando el objeto
                         representarUsuario(lectura);
-                        t=(new Thread(new Multiples_Threads(grupo,cli,null,lectura)));
+                        t=(new Thread(new Multiples_Threads(grupo,cli,null,lectura,null,null)));
                         t.start();
                     }
                 }
