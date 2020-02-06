@@ -54,7 +54,7 @@ public class Multiples_Threads implements Runnable{
             //crear THREADs de lectura
             boolean ejecutar=true,nombreRepetido=false;char salir;//variables que se ocupan de terminar el servidor
             Socket cli;//donde se crearan los nuevos clientes
-            DataOutputStream dataout;
+            //DataOutputStream dataout;
             ObjectOutputStream salida;
             Collection<Thread> threads_totales= new LinkedList<>();
             try {
@@ -62,7 +62,7 @@ public class Multiples_Threads implements Runnable{
                     cli= server.accept();
                     coleccion.add(cli);
                     datain = new DataInputStream(cli.getInputStream());
-                    dataout = new DataOutputStream(cli.getOutputStream());
+                    //dataout = new DataOutputStream(cli.getOutputStream());
                     lectura=datain.readUTF();
                     /*do{
                         lectura=datain.readUTF();
