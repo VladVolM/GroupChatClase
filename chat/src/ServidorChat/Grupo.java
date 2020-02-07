@@ -37,12 +37,19 @@ public class Grupo extends javax.swing.JPanel {
     }
     
     public void borrarUsuario(String usuario){
+        modelo.removeElement(usuario);
+        jList1.setModel(modelo);
+        envio(null,usuario);
+    }
+    
+    private synchronized void envio(String envio,String usuario){
+        //enviar un metodo X que elija si es mensaje o usuario
+        //true mensaje, false usuario (true añadir,false borrar)
         Iterator itr=coleccion.iterator();
         Socket c;
         DataOutputStream dataout;
-        modelo.removeElement(usuario);
-        jList1.setModel(modelo);
-        while(itr.hasNext()) {
+        if (envio==null){
+            while(itr.hasNext()) {
                 try {
                     c = (Socket)itr.next();
                     dataout = new DataOutputStream(c.getOutputStream());
@@ -54,39 +61,33 @@ public class Grupo extends javax.swing.JPanel {
                     System.out.println("Error en borrar usuario");
                 }
             }
-    }
-    
-    private void envio(String envio,String usuario){
-        //enviar un metodo X que elija si es mensaje o usuario
-        //true mensaje, false usuario (true añadir,false borrar)
-        Iterator itr=coleccion.iterator();
-        Socket c;
-        DataOutputStream dataout;
-        
-        if (usuario==null){
-
-            while(itr.hasNext()) {
-                try {
-                    c = (Socket)itr.next();
-                    dataout = new DataOutputStream(c.getOutputStream());
-                    dataout.writeBoolean(true);
-                    dataout.writeUTF(envio);
-                } catch (IOException ex) {
-                    Logger.getLogger(Grupo.class.getName()).log(Level.SEVERE, null, ex);
-                    System.out.println("Error en poner mensaje");
-                }
-            }
         }else{
-            while(itr.hasNext()) {
-                try {
-                    c = (Socket)itr.next();
-                    dataout = new DataOutputStream(c.getOutputStream());
-                    dataout.writeBoolean(false);
-                    dataout.writeBoolean(true);
-                    dataout.writeUTF(usuario);
-                } catch (IOException ex) {
-                    Logger.getLogger(Grupo.class.getName()).log(Level.SEVERE, null, ex);
-                    System.out.println("Error en poner usuario");
+            if (usuario==null){
+                while(itr.hasNext()) {
+                    try {
+                        c = (Socket)itr.next();
+                        dataout = new DataOutputStream(c.getOutputStream());
+                        dataout.writeBoolean(true);
+                        dataout.writeUTF(envio);
+                    } catch (IOException ex) {
+                        Logger.getLogger(Grupo.class.getName()).log(Level.SEVERE, null, ex);
+                        System.out.println("Error en poner mensaje");
+                    }
+                }
+            }else{
+                while(itr.hasNext()) {
+                    try {
+                        c = (Socket)itr.next();
+                        dataout = new DataOutputStream(c.getOutputStream());
+                        dataout.writeBoolean(true);
+                        dataout.writeUTF(envio);
+                        dataout.writeBoolean(false);
+                        dataout.writeBoolean(true);
+                        dataout.writeUTF(usuario);
+                    } catch (IOException ex) {
+                        Logger.getLogger(Grupo.class.getName()).log(Level.SEVERE, null, ex);
+                        System.out.println("Error en poner usuario");
+                    }
                 }
             }
         }

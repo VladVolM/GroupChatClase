@@ -68,10 +68,13 @@ DataInputStream datain;
         jScrollPane2.setViewportView(jList1);
 
         jLabel1.setText("M:");
+        jLabel1.setMaximumSize(new java.awt.Dimension(12, 24));
+        jLabel1.setMinimumSize(new java.awt.Dimension(12, 24));
+        jLabel1.setPreferredSize(new java.awt.Dimension(12, 24));
 
-        jTextField1.setMaximumSize(new java.awt.Dimension(211, 22));
-        jTextField1.setMinimumSize(new java.awt.Dimension(211, 22));
-        jTextField1.setPreferredSize(new java.awt.Dimension(211, 22));
+        jTextField1.setMaximumSize(new java.awt.Dimension(211, 24));
+        jTextField1.setMinimumSize(new java.awt.Dimension(211, 24));
+        jTextField1.setPreferredSize(new java.awt.Dimension(211, 24));
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
@@ -93,7 +96,7 @@ DataInputStream datain;
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
